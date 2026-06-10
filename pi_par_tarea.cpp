@@ -1,3 +1,5 @@
+//José Miguel Comprés Arias - 10153259
+
 #include "mpi.h"
 #include <cstdlib>
 #include <iostream>

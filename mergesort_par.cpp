@@ -93,15 +93,20 @@ int main (int argc, char *argv[]) {
     if (random == '1') {
       random_device rd;
       mt19937 generador(rd());
-      uniform_int_distribution<long> distribucion(1, 1000000000);
+      uniform_int_distribution<long> distribucion(1, 100);
       for (int i = 0; i < n; i++) {
         arr[i] = distribucion(generador);
       }
-      cout<<"Arreglo: "<<endl;
-      for (int in : arr) {
-        cout<<in<<' ';
+      char mostrar;
+      cout<<"Mostrar arreglo aleatorio? (Ingrese 1 para indicar que sí y cualquier otra tecla para indicar que no): "<<endl;
+      cin>>mostrar;
+      if (mostrar == '1') {
+        cout<<"Arreglo: "<<endl;
+        for (int in : arr) {
+          cout<<in<<' ';
+        }
+        cout<<endl;
       }
-      cout<<endl;
     }
     else {
       cout<<"Ingrese los elementos del arreglo"<<endl;

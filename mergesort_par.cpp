@@ -65,6 +65,7 @@ int main (int argc, char *argv[]) {
 
   int rank, size;
   MPI_Status estado;
+  double start_time, end_time;
   MPI_Init(&argc, &argv);
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   MPI_Comm_size(MPI_COMM_WORLD, &size);
@@ -120,6 +121,11 @@ int main (int argc, char *argv[]) {
   }
 
   arrlocal.resize(n/size + ((rank<n%size)?1:0));
+
+  MPI_Barrier(MPI_COMM_WORLD);
+  start_time = MPI_Wtime();
+
+  //scatterv es para distribuir con diferentes cargas (ya que si hay un residuo de n/size se asigna esa parte extra a los primeros procesos)
   MPI_Scatterv(arr.data(), distribuciones.data(), indices_distribuciones.data(), MPI_INT, arrlocal.data(), arrlocal.size(), MPI_INT, 0, MPI_COMM_WORLD);
 
   if (!arrlocal.empty()) {
@@ -154,7 +160,11 @@ int main (int argc, char *argv[]) {
     step *= 2;
   }
 
+  end_time = MPI_Wtime();
+
   if (rank == 0) {
+    cout<<"Tiempo de ejecución: "<<(end_time - start_time)*1000<<" ms"<<endl<<endl;
+
     char mostrar;
     cout<<"Mostrar arreglo ordenado? (Ingrese 1 para indicar que sí y cualquier otra tecla para indicar que no): "<<endl;
     cin>>mostrar;
